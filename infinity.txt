@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BOT-FATHER | Get Your Link</title>
+
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --bg: #070b14;
+  --cyan: #00f5ff;
+  --purple: #9b5cff;
+  --green: #00ff99;
+  --text: #f5f7ff;
+  --muted: #9ca8bd;
+}
+
+body {
+  min-height: 100vh;
+  padding: 25px 14px;
+  font-family: Arial, Helvetica, sans-serif;
+  color: var(--text);
+  background:
+    radial-gradient(circle at 15% 10%, #182b54 0, transparent 35%),
+    radial-gradient(circle at 90% 85%, #291442 0, transparent 35%),
+    var(--bg);
+}
+
+.container {
+  width: 100%;
+  max-width: 440px;
+  margin: 0 auto;
+}
+
+.header {
+  text-align: center;
+  margin: 10px 0 24px;
+}
+
+.logo {
+  width: 105px;
+  height: 105px;
+  object-fit: contain;
+  border-radius: 50%;
+  padding: 5px;
+  background: #101827;
+  border: 2px solid var(--cyan);
+  box-shadow: 0 0 20px #00f5ff70;
+  margin-bottom: 15px;
+}
+
+.brand {
+  font-size: 30px;
+  font-weight: 900;
+  letter-spacing: 3px;
+  color: var(--cyan);
+  text-shadow: 0 0 15px #00f5ff70;
+}
+
+.subtitle {
+  margin-top: 8px;
+  color: #c3ccdc;
+  font-size: 13px;
+  letter-spacing: 1.5px;
+}
+
+.panel {
+  background: #0d1422;
+  border: 1px solid #26364b;
+  border-radius: 20px;
+  padding: 20px 16px;
+  box-shadow: 0 12px 35px #0008;
+}
+
+.heading {
+  text-align: center;
+  font-size: 21px;
+  font-weight: 800;
+  margin-bottom: 8px;
+}
+
+.description {
+  text-align: center;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.6;
+  margin-bottom: 22px;
+}
+
+.step-card {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-align: left;
+  padding: 13px 11px;
+  margin-bottom: 12px;
+  border-radius: 13px;
+  border: 1px solid #26364b;
+  background: linear-gradient(135deg, #151f31, #0c1220);
+  color: white;
+  cursor: pointer;
+  transition: .2s ease;
+}
+
+.step-card:hover {
+  border-color: var(--cyan);
+  transform: translateY(-2px);
+}
+
+.step-card.completed {
+  border-color: var(--green);
+  background: linear-gradient(135deg, #102c28, #101d27);
+}
+
+.step-card.loading {
+  border-color: var(--purple);
+  opacity: .9;
+  cursor: wait;
+  pointer-events: none;
+  transform: none;
+}
+
+.step-number {
+  width: 39px;
+  height: 39px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 11px;
+  background: #17263b;
+  border: 1px solid #334760;
+  color: var(--cyan);
+  font-weight: 900;
+  font-size: 15px;
+}
+
+.completed .step-number {
+  background: #073d2b;
+  border-color: var(--green);
+  color: var(--green);
+}
+
+.step-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.step-title {
+  display: block;
+  font-size: 14px;
+  font-weight: 800;
+  margin-bottom: 5px;
+}
+
+.step-description {
+  display: block;
+  font-size: 11px;
+  color: var(--muted);
+  line-height: 1.4;
+}
+
+.step-status {
+  flex-shrink: 0;
+  font-size: 11px;
+  font-weight: 800;
+  color: var(--cyan);
+}
+
+.completed .step-status {
+  color: var(--green);
+}
+
+.loading-text {
+  color: #c4a2ff !important;
+  min-width: 48px;
+  text-align: center;
+}
+
+.loading-spinner {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border: 2px solid #9b5cff55;
+  border-top-color: #9b5cff;
+  border-radius: 50%;
+  animation: spin .7s linear infinite;
+  vertical-align: middle;
+  margin-right: 4px;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.progress-section {
+  margin-top: 22px;
+}
+
+.progress-label {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  font-size: 12px;
+  color: #cbd5e1;
+  margin-bottom: 9px;
+}
+
+.progress-track {
+  height: 9px;
+  background: #202b3c;
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  width: 0%;
+  height: 100%;
+  border-radius: 20px;
+  background: linear-gradient(90deg, var(--cyan), var(--purple), var(--green));
+  transition: width .35s ease;
+}
+
+.get-link {
+  width: 100%;
+  padding: 15px 12px;
+  margin-top: 20px;
+  border: none;
+  border-radius: 12px;
+  background: linear-gradient(90deg, #263244, #354158);
+  color: #8592a7;
+  font-size: 15px;
+  font-weight: 900;
+  letter-spacing: 1px;
+  cursor: not-allowed;
+  transition: .25s ease;
+}
+
+.get-link.unlocked {
+  background: linear-gradient(90deg, #00d9ff, #00ff99);
+  color: #06111a;
+  cursor: pointer;
+  box-shadow: 0 0 20px #00f5ff40;
+}
+
+.message {
+  text-align: center;
+  min-height: 18px;
+  margin-top: 12px;
+  font-size: 12px;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+.footer {
+  text-align: center;
+  margin-top: 23px;
+  font-size: 11px;
+  color: #78869d;
+  letter-spacing: 1.5px;
+}
+
+.footer strong {
+  color: var(--cyan);
+}
+
+@media (max-width: 360px) {
+  .brand { font-size: 25px; }
+  .heading { font-size: 18px; }
+
+  .step-card {
+    gap: 8px;
+    padding: 11px 8px;
+  }
+
+  .step-title { font-size: 12px; }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+  <header class="header">
+    <img
+      class="logo"
+      src="https://i.ibb.co/KjRVvfYM/ic-launcher.png"
+      alt="BOT-FATHER Logo"
+    >
+
+    <div class="brand">BOT-FATHER</div>
+    <div class="subtitle">OFFICIAL LINK ACCESS</div>
+  </header>
+
+  <main class="panel">
+
+    <h1 class="heading">Complete All Steps</h1>
+
+    <p class="description">
+      Open all three links. Each step will complete after
+      10 seconds of loading.
+    </p>
+
+    <button class="step-card" id="step1" type="button">
+      <span class="step-number">01</span>
+      <span class="step-info">
+        <span class="step-title">YouTube Channel 1</span>
+        <span class="step-description">Visit our first YouTube channel</span>
+      </span>
+      <span class="step-status" id="status1">OPEN ↗</span>
+    </button>
+
+    <button class="step-card" id="step2" type="button">
+      <span class="step-number">02</span>
+      <span class="step-info">
+        <span class="step-title">YouTube Channel 2</span>
+        <span class="step-description">Visit our second YouTube channel</span>
+      </span>
+      <span class="step-status" id="status2">OPEN ↗</span>
+    </button>
+
+    <button class="step-card" id="step3" type="button">
+      <span class="step-number">03</span>
+      <span class="step-info">
+        <span class="step-title">Telegram Channel</span>
+        <span class="step-description">Visit our Telegram channel</span>
+      </span>
+      <span class="step-status" id="status3">OPEN ↗</span>
+    </button>
+
+    <div class="progress-section">
+      <div class="progress-label">
+        <span>YOUR PROGRESS</span>
+        <span id="progressText">0 / 3 COMPLETED</span>
+      </div>
+
+      <div class="progress-track">
+        <div class="progress-fill" id="progressFill"></div>
+      </div>
+    </div>
+
+    <button class="get-link" id="getLink" type="button" disabled>
+      🔒 COMPLETE ALL STEPS
+    </button>
+
+    <div class="message" id="message" aria-live="polite">
+      Complete all three steps to unlock your link.
+    </div>
+
+  </main>
+
+  <footer class="footer">
+    POWERED BY <strong>AMIT BHUMIHAR</strong>
+  </footer>
+
+</div>
+
+<script>
+(function () {
+  "use strict";
+
+  const links = {
+    youtube1: "https://youtube.com/@bot_fathers?si=ryU8gMju1AOyjK4c",
+    youtube2: "https://youtube.com/@bot_fathers786?si=VIZzKdwhJBFAbS_H",
+    telegram: "https://t.me/AMITOURNAMENTFATHER",
+    final: "https://t.me/AMITOURNAMENTFATHER"
+  };
+
+  const STORAGE_KEY = "botFatherStepsCompleted_session_v1";
+
+  const stepIds = ["step1", "step2", "step3"];
+  const statusIds = ["status1", "status2", "status3"];
+
+  const stepLinks = [
+    links.youtube1,
+    links.youtube2,
+    links.telegram
+  ];
+
+  const completed = new Set();
+  const loadingSteps = new Set();
+
+  const progressText = document.getElementById("progressText");
+  const progressFill = document.getElementById("progressFill");
+  const getLinkButton = document.getElementById("getLink");
+  const message = document.getElementById("message");
+
+  // Restore progress in the current tab session.
+  try {
+    const saved = sessionStorage.getItem(STORAGE_KEY);
+
+    if (saved) {
+      const parsed = JSON.parse(saved);
+
+      if (Array.isArray(parsed)) {
+        parsed.forEach(function (value) {
+          if ([0, 1, 2].includes(value)) {
+            completed.add(value);
+          }
+        });
+      }
+    }
+  } catch (error) {}
+
+  function saveProgress() {
+    try {
+      sessionStorage.setItem(
+        STORAGE_KEY,
+        JSON.stringify(Array.from(completed))
+      );
+    } catch (error) {}
+  }
+
+  function updateUI() {
+    const count = completed.size;
+
+    progressText.textContent = count + " / 3 COMPLETED";
+    progressFill.style.width = (count / 3 * 100) + "%";
+
+    stepIds.forEach(function (id, index) {
+      const card = document.getElementById(id);
+      const status = document.getElementById(statusIds[index]);
+
+      card.classList.toggle("completed", completed.has(index));
+
+      if (!loadingSteps.has(index)) {
+        status.classList.remove("loading-text");
+        status.textContent = completed.has(index) ? "✓ DONE" : "OPEN ↗";
+      }
+    });
+
+    if (count === 3) {
+      getLinkButton.disabled = false;
+      getLinkButton.classList.add("unlocked");
+      getLinkButton.textContent = "🔓 GET YOUR LINK";
+      message.textContent = "All steps completed! Your link is unlocked.";
+      message.style.color = "#00ff99";
+    } else {
+      getLinkButton.disabled = true;
+      getLinkButton.classList.remove("unlocked");
+      getLinkButton.textContent = "🔒 COMPLETE ALL STEPS";
+
+      message.textContent = loadingSteps.size
+        ? "Loading is running. Your step will complete in 10 seconds."
+        : "Complete " + (3 - count) + " more step(s) to unlock your link.";
+
+      message.style.color = "#9ca8bd";
+    }
+  }
+
+  function openStep(index) {
+    const card = document.getElementById(stepIds[index]);
+    const status = document.getElementById(statusIds[index]);
+
+    if (loadingSteps.has(index)) return;
+
+    if (completed.has(index)) {
+      window.open(stepLinks[index], "_blank");
+      return;
+    }
+
+    /*
+      Open the link immediately on the click.
+      The 10-second timer continues on the original page.
+    */
+    const newTab = window.open(stepLinks[index], "_blank");
+
+    if (!newTab) {
+      // Pop-up blocked: use the current tab instead.
+      window.location.href = stepLinks[index];
+      return;
+    }
+
+    newTab.opener = null;
+
+    loadingSteps.add(index);
+    card.classList.add("loading");
+    status.classList.add("loading-text");
+
+    let seconds = 0;
+    status.innerHTML = '<span class="loading-spinner"></span>0%';
+
+    message.textContent = "Loading... Please wait 10 seconds.";
+    message.style.color = "#c4a2ff";
+
+    const timer = setInterval(function () {
+      seconds++;
+
+      status.innerHTML =
+        '<span class="loading-spinner"></span>' + (seconds * 10) + "%";
+
+      if (seconds >= 10) {
+        clearInterval(timer);
+
+        loadingSteps.delete(index);
+        completed.add(index);
+
+        saveProgress();
+
+        card.classList.remove("loading");
+        updateUI();
+      }
+    }, 1000);
+  }
+
+  stepIds.forEach(function (id, index) {
+    document.getElementById(id).addEventListener("click", function () {
+      openStep(index);
+    });
+  });
+
+  getLinkButton.addEventListener("click", function () {
+    if (completed.size !== 3) return;
+    window.location.href = links.final;
+  });
+
+  updateUI();
+  window.addEventListener("pageshow", updateUI);
+})();
+</script>
+
+</body>
+</html>
